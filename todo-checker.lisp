@@ -2,17 +2,13 @@
 
 (in-package #:todo-checker)
 
-(defun missing-tickets () 
-  (let ((ticket-list (jira-utils:get-list-of-issues)) (todo-string (get-todo-list)))
+(defvar *default-todo-file* (merge-pathnames "sync/work/todo.org" (user-homedir-pathname)))
+
+(defun missing-tickets (&key (todo-file-pathname *default-todo-file*))
+  (let ((ticket-list (jira-utils:get-list-of-issues))
+	(todo-string (alexandria:read-file-into-string todo-file-pathname)))
     (iter (for ticket in ticket-list)
 	  (when (search ticket todo-string)
 	    (delete ticket ticket-list))
 	  (finally (return ticket-list)))))
-
-(defun get-todo-list ()
-  (let ((todo (open (merge-pathnames "sync/work/todo.org" (user-homedir-pathname)))))
-    (when todo)
-    (let ((todo-string (make-array (file-length todo) :element-type 'character :fill-pointer t)))
-      (read-sequence todo-string todo)
-      todo-string)))
 
