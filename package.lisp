@@ -2,7 +2,7 @@
 
 (defpackage #:todo-checker
   (:use #:cl)
-  (:export #:missing-tickets)
+  (:export #:ticket-status)
   (:shadowing-import-from #:iterate
 			  #:iter
 			  #:for
