@@ -8,7 +8,7 @@
   (let ((ticket-list (jira-utils:get-list-of-issues))
 	(todo-string (alexandria:read-file-into-string todo-file-pathname)))
     (iter (for ticket in ticket-list)
-	  (when (search ticket todo-string)
-	    (delete ticket ticket-list))
-	  (finally (return ticket-list)))))
-
+	  (if (search ticket todo-string)
+	      (collect ticket into known-tickets)
+	      (collect ticket into unknown-tickets))
+	  (finally (return (list known-tickets unknown-tickets))))))

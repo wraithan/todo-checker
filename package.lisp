@@ -6,5 +6,6 @@
   (:shadowing-import-from #:iterate
 			  #:iter
 			  #:for
-			  #:finally))
+			  #:finally
+			  #:collect))
 
